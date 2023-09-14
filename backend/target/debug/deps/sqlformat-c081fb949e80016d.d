@@ -1,0 +1,12 @@
+/home/b/Documents/Rust/rust_warp_postgres/backend/target/debug/deps/sqlformat-c081fb949e80016d.rmeta: /home/b/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sqlformat-0.1.8/src/lib.rs /home/b/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sqlformat-0.1.8/src/formatter.rs /home/b/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sqlformat-0.1.8/src/indentation.rs /home/b/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sqlformat-0.1.8/src/inline_block.rs /home/b/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sqlformat-0.1.8/src/params.rs /home/b/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sqlformat-0.1.8/src/tokenizer.rs
+
+/home/b/Documents/Rust/rust_warp_postgres/backend/target/debug/deps/libsqlformat-c081fb949e80016d.rlib: /home/b/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sqlformat-0.1.8/src/lib.rs /home/b/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sqlformat-0.1.8/src/formatter.rs /home/b/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sqlformat-0.1.8/src/indentation.rs /home/b/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sqlformat-0.1.8/src/inline_block.rs /home/b/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sqlformat-0.1.8/src/params.rs /home/b/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sqlformat-0.1.8/src/tokenizer.rs
+
+/home/b/Documents/Rust/rust_warp_postgres/backend/target/debug/deps/sqlformat-c081fb949e80016d.d: /home/b/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sqlformat-0.1.8/src/lib.rs /home/b/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sqlformat-0.1.8/src/formatter.rs /home/b/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sqlformat-0.1.8/src/indentation.rs /home/b/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sqlformat-0.1.8/src/inline_block.rs /home/b/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sqlformat-0.1.8/src/params.rs /home/b/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sqlformat-0.1.8/src/tokenizer.rs
+
+/home/b/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sqlformat-0.1.8/src/lib.rs:
+/home/b/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sqlformat-0.1.8/src/formatter.rs:
+/home/b/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sqlformat-0.1.8/src/indentation.rs:
+/home/b/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sqlformat-0.1.8/src/inline_block.rs:
+/home/b/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sqlformat-0.1.8/src/params.rs:
+/home/b/.cargo/registry/src/index.crates.io-6f17d22bba15001f/sqlformat-0.1.8/src/tokenizer.rs:
