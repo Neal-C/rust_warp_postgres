@@ -1,4 +1,4 @@
-use std::time::Duration;
+use std::{fs, time::Duration};
 
 use sqlx::{postgres::PgPoolOptions, Pool, Postgres};
 
@@ -36,6 +36,22 @@ async fn new_database_pool(
         .await
 }
 
+async fn seed_database(database: &PostgresDatabase, file: &str) -> Result<(), sqlx::Error> {
+    // Read the file
+    let content = fs::read_to_string(file).map_err(|error| {
+        println!("Error reading: {}, (cause :{:?}", file, error);
+    });
+
+    // comments in the sql seed files will break this code
+    let sqls_seed_files_statements: Vec<&str> = content.split(";").collect();
+
+    for sql in sqls_seed_files_statements {
+        sqlx::query(&sql).execute(database).await
+    }
+
+    Ok(())
+}
+
 #[cfg(test)]
-#[path ="../_tests/model_db.rs"]
+#[path = "../_tests/model_db.rs"]
 mod tests;
