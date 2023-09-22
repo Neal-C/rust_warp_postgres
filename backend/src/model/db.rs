@@ -40,13 +40,17 @@ async fn seed_database(database: &PostgresDatabase, file: &str) -> Result<(), sq
     // Read the file
     let content = fs::read_to_string(file).map_err(|error| {
         println!("Error reading: {}, (cause :{:?}", file, error);
-    });
+        error
+    })?;
 
     // comments in the sql seed files will break this code
-    let sqls_seed_files_statements: Vec<&str> = content.split(";").collect();
+    let sqls_seed_files_statements: Vec<&str> = content.split(';').collect();
 
     for sql in sqls_seed_files_statements {
-        sqlx::query(&sql).execute(database).await
+        match sqlx::query(sql).execute(database).await {
+            Ok(_) => (),
+            Err(error) => println!("Error seeding database, (cause :{error:?}",),
+        }
     }
 
     Ok(())

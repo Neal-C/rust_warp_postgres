@@ -1,4 +1,4 @@
--- Development only --
+
 DROP DATABASE IF EXISTS rust_warp_postgres;
 DROP USER IF EXISTS rust_warp_postgres_user;
 
