@@ -1,3 +1,4 @@
+use crate::model;
 use crate::model::db::PostgresDatabase;
 
 #[derive(sqlx::FromRow, Debug, Clone)]
@@ -10,7 +11,7 @@ pub struct Todo {
 pub struct ModelAccessController;
 
 impl ModelAccessController {
-    pub async fn list(database: &PostgresDatabase) -> Result<Vec<Todo>, sqlx::Error> {
+    pub async fn list(database: &PostgresDatabase) -> Result<Vec<Todo>, model::Error> {
         let sql_statement = "SELECT id, cid, title FROM todo ORDER BY id DESC";
 
         let query = sqlx::query_as::<_, Todo>(sql_statement);
