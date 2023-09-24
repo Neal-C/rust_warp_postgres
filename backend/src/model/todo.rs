@@ -2,6 +2,7 @@ use std::default;
 
 use crate::model;
 use crate::model::db::PostgresDatabase;
+use crate::security::UserContext;
 
 #[derive(sqlx::FromRow, Debug, Clone, Default)]
 pub struct Todo {
@@ -36,6 +37,7 @@ pub struct ModelAccessController;
 impl ModelAccessController {
     pub async fn create(
         database: &PostgresDatabase,
+        utx: &UserContext,
         data: PartialTodo,
     ) -> Result<Todo, model::Error> {
         let sql = "INSERT INTO todo (cid, title) VALUES ($1, $2) RETURNING id, cid, title, status";
@@ -49,7 +51,10 @@ impl ModelAccessController {
         Ok(todo)
     }
 
-    pub async fn list(database: &PostgresDatabase) -> Result<Vec<Todo>, model::Error> {
+    pub async fn list(
+        database: &PostgresDatabase,
+        _utx: &UserContext,
+    ) -> Result<Vec<Todo>, model::Error> {
         let sql_statement = "SELECT id, cid, title, status FROM todo ORDER BY id DESC";
 
         let query = sqlx::query_as::<_, Todo>(sql_statement);
