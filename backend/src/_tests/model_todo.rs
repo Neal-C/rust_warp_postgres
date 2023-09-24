@@ -22,7 +22,7 @@ async fn model_todo_create() -> Result<(), Box<dyn std::error::Error>> {
 
     assert!(todo_created.id >= 1000, "ID should be >= 1000");
     assert_eq!(data_fixture.title.unwrap(), todo_created.title);
-    assert_eq!(todo::Status::Open, todo_created.status);
+    assert_eq!(todo_created.status, todo::Status::Open);
 
     Ok(())
 }
@@ -42,13 +42,30 @@ async fn model_todo_list() -> Result<(), Box<dyn std::error::Error>> {
 
     println!("\n\n-->> {result:#?}");
 
-    assert_eq!(101, result[0].id);
-    assert_eq!(123, result[0].cid);
-    assert_eq!("todo 101", result[0].title);
+    assert_eq!(result[0].id, 101);
+    assert_eq!(result[0].cid, 123);
+    assert_eq!(result[0].title, "todo 101");
     // the other todo
-    assert_eq!(101, result[0].id);
-    assert_eq!(123, result[0].cid);
-    assert_eq!("todo 100", result[0].title);
+    assert_eq!(result[0].id, 101);
+    assert_eq!(result[0].cid, 123);
+    assert_eq!(result[0].title, "todo 100");
 
+    Ok(())
+}
+
+#[tokio::test]
+async fn model_todo_get() -> Result<(), Box<dyn std::error::Error>> {
+    // ARRANGE
+    let database = initialize_database().await?;
+
+    let user_context = user_context_from_token("123").await?;
+
+    // ACT
+    let todo = ModelAccessController::get(&database, &user_context, 100).await?;
+
+    // ASSERT
+    assert_eq!(todo.id, 100);
+    assert_eq!(todo.title, "todo 100");
+    assert_eq!(todo.status, todo::Status::Closed);
     Ok(())
 }

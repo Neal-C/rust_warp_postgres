@@ -63,6 +63,36 @@ impl ModelAccessController {
 
         Ok(todos)
     }
+
+    pub async fn get(
+        database: &PostgresDatabase,
+        _utx: &UserContext,
+        id: i64,
+    ) -> Result<Todo, model::Error> {
+        let sql_statement = "SELECT id, cid, title, status FROM todo WHERE id = $1";
+
+        let sql_query = sqlx::query_as::<_, Todo>(sql_statement);
+
+        let todo = sql_query.fetch_one(database).await?;
+
+        Ok(todo)
+    }
+
+    pub async fn update(
+        database: &PostgresDatabase,
+        utx: &UserContext,
+        id: i64,
+        data: PartialTodo,
+    ) -> Result<Todo, model::Error> {
+        let sql_statement =
+            "UPDATE todo SET (title, status) = ($2, $3) WHERE id = $1 RETURNING id, title, status";
+
+        let sql_query = sqlx::query_as::<_, Todo>(sql_statement);
+
+        let todo = sql_query.fetch_one(database).await?;
+
+        Ok(todo)
+    }
 }
 
 #[cfg(test)]
