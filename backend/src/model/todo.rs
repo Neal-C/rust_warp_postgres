@@ -11,7 +11,13 @@ pub struct Todo {
     pub status: Status,
 }
 
-#[derive(sqlx::Type, Default, Debug, Clone)]
+// we need the sqlx macro to map the database enum type to that struct
+// it needs to be the same name than in the sql file
+// The Rust's side of enum must be Uppercase
+// Since the schema uses lowercase, we're using another sqlx macro for that conversion
+#[derive(sqlx::Type, Default, Debug, Clone, PartialEq, Eq)]
+#[sqlx(type_name = "todo_status")]
+#[sqlx(rename_all = "lowercase")]
 pub enum Status {
     Open,
     #[default]
@@ -32,10 +38,10 @@ impl ModelAccessController {
         database: &PostgresDatabase,
         data: PartialTodo,
     ) -> Result<Todo, model::Error> {
-        let sql = "INSERT INTO todo (cid, title) VALUES ($1, $2) RETURNING id, cid, title";
+        let sql = "INSERT INTO todo (cid, title) VALUES ($1, $2) RETURNING id, cid, title, status";
 
         let query = sqlx::query_as::<_, Todo>(sql)
-            .bind(123_i64)
+            .bind(123_i64) // FIXME : should come from user context
             .bind(data.title.unwrap_or_else(|| "untitled".into()));
 
         let todo = query.fetch_one(database).await?;
@@ -44,7 +50,7 @@ impl ModelAccessController {
     }
 
     pub async fn list(database: &PostgresDatabase) -> Result<Vec<Todo>, model::Error> {
-        let sql_statement = "SELECT id, cid, title FROM todo ORDER BY id DESC";
+        let sql_statement = "SELECT id, cid, title, status FROM todo ORDER BY id DESC";
 
         let query = sqlx::query_as::<_, Todo>(sql_statement);
 

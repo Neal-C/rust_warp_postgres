@@ -1,5 +1,5 @@
 use super::{ModelAccessController, PartialTodo};
-use crate::model::db::initialize_database;
+use crate::model::{db::initialize_database, todo};
 
 #[tokio::test]
 async fn model_todo_create() -> Result<(), Box<dyn std::error::Error>> {
@@ -16,6 +16,7 @@ async fn model_todo_create() -> Result<(), Box<dyn std::error::Error>> {
 
     assert!(todo_created.id >= 1000, "ID should be >= 1000");
     assert_eq!(data_fixture.title.unwrap(), todo_created.title);
+    assert_eq!(todo::Status::Open, todo_created.status);
 
     Ok(())
 }

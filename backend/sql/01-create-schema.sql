@@ -1,11 +1,11 @@
--- ItemTODO status enum
+-
 CREATE TYPE todo_status AS ENUM ('OPEN', 'CLOSED');
 
 CREATE TABLE IF NOT EXISTS todo (
     id SERIAL PRIMARY KEY,
     cid INTEGER NOT NULL,
     ctime TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT NOW(),
-    title VARCHAR(127) NOT NULL,
+    title VARCHAR(63) NOT NULL,
     status todo_status NOT NULL DEFAULT 'OPEN'
 );
 
