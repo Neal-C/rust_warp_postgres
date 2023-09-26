@@ -1,6 +1,6 @@
 use super::{ModelAccessController, PartialTodo};
 use crate::{
-    model::{db::initialize_database, todo},
+    model::{self, db::initialize_database, todo},
     security::{user_context_from_token, UserContext},
 };
 
@@ -54,7 +54,7 @@ async fn model_todo_list() -> Result<(), Box<dyn std::error::Error>> {
 }
 
 #[tokio::test]
-async fn model_todo_get() -> Result<(), Box<dyn std::error::Error>> {
+async fn model_todo_get_ok() -> Result<(), Box<dyn std::error::Error>> {
     // ARRANGE
     let database = initialize_database().await?;
 
@@ -67,6 +67,28 @@ async fn model_todo_get() -> Result<(), Box<dyn std::error::Error>> {
     assert_eq!(todo.id, 100);
     assert_eq!(todo.title, "todo 100");
     assert_eq!(todo.status, todo::Status::Closed);
+    Ok(())
+}
+
+#[tokio::test]
+async fn model_todo_get_wrong_id() -> Result<(), Box<dyn std::error::Error>> {
+    // ARRANGE
+    let database = initialize_database().await?;
+
+    let user_context = user_context_from_token("123").await?;
+
+    // ACT
+    let result = ModelAccessController::get(&database, &user_context, 999).await;
+
+    // ASSERT
+    match result {
+        Ok(_) => unreachable!("Should not succedd"),
+        Err(model::Error::EntityNotFound(typ, id)) => {
+            assert_eq!("todo", typ);
+            assert_eq!(String::from("999"), id);
+        }
+        other_error => unreachable!("Wrong error {other_error:?}"),
+    };
     Ok(())
 }
 
@@ -105,7 +127,10 @@ async fn model_todo_update_ok() -> Result<(), Box<dyn std::error::Error>> {
 
     let list_result = ModelAccessController::list(&database, &user_context).await?;
 
+    // ASSERT
     assert_eq!(list_result.len(), 3);
+    assert_eq!(todo_updated.id, todo_created.id);
+    assert_eq!(todo_updated.title, update_data_fixture.title.unwrap());
 
     Ok(())
 }

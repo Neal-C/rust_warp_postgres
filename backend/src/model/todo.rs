@@ -89,7 +89,13 @@ impl ModelAccessController {
 
         let sql_query = sqlx::query_as::<_, Todo>(sql_statement);
 
-        let todo = sql_query.fetch_one(database).await?;
+        let todo = sql_query
+            .fetch_one(database)
+            .await
+            .map_err(|sqlx_error| match sqlx_error {
+                sqlx::Error::RowNotFound => model::Error::EntityNotFound("todo", id.to_string()),
+                other => model::Error::SqlxError(other),
+            })?;
 
         Ok(todo)
     }
