@@ -82,12 +82,12 @@ async fn model_todo_get_wrong_id() -> Result<(), Box<dyn std::error::Error>> {
 
     // ASSERT
     match result {
-        Ok(_) => unreachable!("Should not succedd"),
+        Ok(_) => unreachable!("Should not succeed"),
         Err(model::Error::EntityNotFound(typ, id)) => {
             assert_eq!("todo", typ);
             assert_eq!(String::from("999"), id);
         }
-        other_error => unreachable!("Wrong error {other_error:?}"),
+        other_error => unreachable!("Wrong error: {other_error:?}"),
     };
     Ok(())
 }

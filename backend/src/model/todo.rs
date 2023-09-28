@@ -73,9 +73,9 @@ impl ModelAccessController {
 
         let sql_query = sqlx::query_as::<_, Todo>(sql_statement);
 
-        let todo = sql_query.fetch_one(database).await?;
+        let todo = sql_query.fetch_one(database).await;
 
-        Ok(todo)
+        handle_fetch_one_result(todo, id)
     }
 
     pub async fn update(
@@ -89,16 +89,22 @@ impl ModelAccessController {
 
         let sql_query = sqlx::query_as::<_, Todo>(sql_statement);
 
-        let todo = sql_query
-            .fetch_one(database)
-            .await
-            .map_err(|sqlx_error| match sqlx_error {
-                sqlx::Error::RowNotFound => model::Error::EntityNotFound("todo", id.to_string()),
-                other => model::Error::SqlxError(other),
-            })?;
+        let todo = sql_query.fetch_one(database).await;
 
-        Ok(todo)
+        handle_fetch_one_result(todo, id)
     }
+}
+
+// Utils
+
+fn handle_fetch_one_result(
+    result: Result<Todo, sqlx::Error>,
+    id: i64,
+) -> Result<Todo, model::Error> {
+    result.map_err(|sqlx_error| match sqlx_error {
+        sqlx::Error::RowNotFound => model::Error::EntityNotFound("todo", id.to_string()),
+        other => model::Error::SqlxError(other),
+    })
 }
 
 #[cfg(test)]
