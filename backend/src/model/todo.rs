@@ -93,6 +93,20 @@ impl ModelAccessController {
 
         handle_fetch_one_result(todo, id)
     }
+
+    pub async fn delete(
+        database: &PostgresDatabase,
+        _utx: &UserContext,
+        id: i64,
+    ) -> Result<Todo, model::Error> {
+        let sql_statement = "DELETE FROM todo WHERE id = $1 RETURNING *";
+
+        let sql_query = sqlx::query_as::<_, Todo>(sql_statement);
+
+        let todo = sql_query.fetch_one(database).await;
+
+        handle_fetch_one_result(todo, id)
+    }
 }
 
 // Utils
