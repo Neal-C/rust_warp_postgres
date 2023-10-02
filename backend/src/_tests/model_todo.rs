@@ -1,6 +1,10 @@
 use super::{ModelAccessController, PartialTodo};
 use crate::{
-    model::{self, db::initialize_database, todo},
+    model::{
+        self,
+        db::initialize_database,
+        todo::{self, Todo},
+    },
     security::{user_context_from_token, UserContext},
 };
 
@@ -150,6 +154,11 @@ async fn model_todo_delete_simple() -> Result<(), Box<dyn std::error::Error>> {
 
     assert_eq!(100, todo.id);
     assert_eq!("todo 100", todo.title);
+
+    // ASSERT
+    let todos: Vec<Todo> = ModelAccessController::list(&database, &utx).await?;
+
+    assert_eq!(todos.len(), 1);
 
     Ok(())
 }
