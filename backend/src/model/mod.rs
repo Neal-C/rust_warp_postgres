@@ -4,6 +4,7 @@ mod db;
 mod todo;
 pub use db::initialize_database;
 pub use db::PostgresDatabase;
+pub use todo::ModelAccessController;
 
 #[allow(clippy::enum_variant_names)]
 #[derive(ThisError, Debug)]

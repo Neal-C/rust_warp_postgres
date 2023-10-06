@@ -1,8 +1,10 @@
+use serde_derive::Serialize;
+
 use crate::model;
 use crate::model::db::PostgresDatabase;
 use crate::security::UserContext;
 
-#[derive(sqlx::FromRow, Debug, Clone, Default)]
+#[derive(sqlx::FromRow, Debug, Clone, Default, Serialize)]
 pub struct Todo {
     pub id: i64,
     pub cid: i64,
@@ -14,7 +16,7 @@ pub struct Todo {
 // it needs to be the same name than in the sql file
 // The Rust's side of enum must be Uppercase
 // Since the schema uses lowercase, we're using another sqlx macro for that conversion
-#[derive(sqlx::Type, Default, Debug, Clone, PartialEq, Eq)]
+#[derive(sqlx::Type, Default, Debug, Clone, PartialEq, Eq, Serialize)]
 #[sqlx(type_name = "todo_status")]
 #[sqlx(rename_all = "lowercase")]
 pub enum Status {

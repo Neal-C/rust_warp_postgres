@@ -22,7 +22,7 @@ async fn main() {
     // Compute the web_folder
     let mut args: Vec<String> = env::args().collect();
     let web_folder: String = args.pop().unwrap_or_else(|| DEFAULT_WEB_FOLDER.to_string());
-    let web_port = DEFAULT_WEB_PORT;
+    let web_port: u16 = DEFAULT_WEB_PORT;
 
     // Get the database
     // In Production, the database might not be accessible right away, we should loop within a time range until accessible or too long to wait

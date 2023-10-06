@@ -5,6 +5,8 @@ pub struct UserContext {
 }
 
 pub async fn user_context_from_token(user_token: &str) -> Result<UserContext, Error> {
+    // TODO : real validation needed
+    // fetch user informations from database
     match user_token.parse::<i64>() {
         Ok(value) => Ok(UserContext { user_id: value }),
         Err(_) => Err(Error::InvalidToken(String::from(user_token))),
