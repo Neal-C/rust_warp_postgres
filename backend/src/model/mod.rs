@@ -2,6 +2,7 @@ use thiserror::Error as ThisError;
 
 mod db;
 mod todo;
+pub use db::initialize_database;
 pub use db::PostgresDatabase;
 
 #[allow(clippy::enum_variant_names)]
