@@ -1,5 +1,3 @@
-use std::default;
-
 use crate::model;
 use crate::model::db::PostgresDatabase;
 use crate::security::UserContext;
@@ -43,7 +41,7 @@ impl ModelAccessController {
         let sql = "INSERT INTO todo (cid, title) VALUES ($1, $2) RETURNING id, cid, title, status";
 
         let query = sqlx::query_as::<_, Todo>(sql)
-            .bind(123_i64) // FIXME : should come from user context
+            .bind(utx.user_id) // FIXME : should come from user context
             .bind(data.title.unwrap_or_else(|| "untitled".into()));
 
         let todo = query.fetch_one(database).await?;
@@ -71,7 +69,7 @@ impl ModelAccessController {
     ) -> Result<Todo, model::Error> {
         let sql_statement = "SELECT id, cid, title, status FROM todo WHERE id = $1";
 
-        let sql_query = sqlx::query_as::<_, Todo>(sql_statement);
+        let sql_query = sqlx::query_as::<_, Todo>(sql_statement).bind(id);
 
         let todo = sql_query.fetch_one(database).await;
 
@@ -80,14 +78,17 @@ impl ModelAccessController {
 
     pub async fn update(
         database: &PostgresDatabase,
-        utx: &UserContext,
+        _utx: &UserContext,
         id: i64,
         data: PartialTodo,
     ) -> Result<Todo, model::Error> {
         let sql_statement =
             "UPDATE todo SET (title, status) = ($2, $3) WHERE id = $1 RETURNING id, title, status";
 
-        let sql_query = sqlx::query_as::<_, Todo>(sql_statement);
+        let sql_query = sqlx::query_as::<_, Todo>(sql_statement)
+            .bind(id)
+            .bind(data.title)
+            .bind(data.status);
 
         let todo = sql_query.fetch_one(database).await;
 
@@ -101,7 +102,7 @@ impl ModelAccessController {
     ) -> Result<Todo, model::Error> {
         let sql_statement = "DELETE FROM todo WHERE id = $1 RETURNING *";
 
-        let sql_query = sqlx::query_as::<_, Todo>(sql_statement);
+        let sql_query = sqlx::query_as::<_, Todo>(sql_statement).bind(id);
 
         let todo = sql_query.fetch_one(database).await;
 

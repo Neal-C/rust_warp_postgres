@@ -20,5 +20,11 @@ docker exec -it -u postgres rust_warp_postgres psql
 
 ```sh
 # -q for quiet , -c for clear, -w for what to watch , -x for execute following command
-cargo watch -q -c -w src/ -x 'test model_database_ --test-threads=1 --no-capture'
+cargo watch -q -c -w src/ -x '--test model_database_ --test-threads=1 --no-capture'
+```
+
+## Development Web
+
+```sh
+cargo watch -q -c -w src/ -x 'run -- --../frontend/web-folder'
 ```
