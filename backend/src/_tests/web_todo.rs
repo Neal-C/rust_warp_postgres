@@ -27,7 +27,7 @@ async fn web_todo_list() -> AnyhowResult<()> {
 
     let response = warp::test::request()
         .method("GET")
-        .header(HEADER_XAUTH, "123")
+        .header(HEADER_XAUTH, "123.user_info_base64.signature_base64")
         .path("api/todos")
         .reply(&todo_apis)
         .await;
