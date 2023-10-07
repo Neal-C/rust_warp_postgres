@@ -19,6 +19,6 @@ pub fn do_auth(
     _database: Arc<model::PostgresDatabase>,
 ) -> impl WarpFilter<Extract = (UserContext,), Error = warp::Rejection> + Clone {
     warp::any().and_then(|| async {
-        Ok::<UserContext, WarpRejection>(user_context_from_token("123").await.unwrap())
+        Ok::<UserContext, WarpRejection>(user_context_from_token("123").await?)
     })
 }

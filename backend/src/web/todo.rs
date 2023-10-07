@@ -32,9 +32,7 @@ async fn todo_list(
     database: Arc<PostgresDatabase>,
     utx: UserContext,
 ) -> Result<Json, warp::Rejection> {
-    let todos = model::ModelAccessController::list(&database, &utx)
-        .await
-        .unwrap();
+    let todos = model::ModelAccessController::list(&database, &utx).await?;
 
     let response = serde_json::json!({
         "data": todos
