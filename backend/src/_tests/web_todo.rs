@@ -1,8 +1,8 @@
+use crate::web::HEADER_XAUTH;
 use std::sync::Arc;
 use warp::hyper;
 use warp::hyper::body;
 use warp::reply;
-
 // use crate::security::user_from_token;
 // use crate::web::handle_rejection;
 use anyhow::{Context, Result as AnyhowResult};
@@ -27,6 +27,7 @@ async fn web_todo_list() -> AnyhowResult<()> {
 
     let response = warp::test::request()
         .method("GET")
+        .header(HEADER_XAUTH, "123")
         .path("api/todos")
         .reply(&todo_apis)
         .await;

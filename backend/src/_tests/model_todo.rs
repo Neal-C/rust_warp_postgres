@@ -18,7 +18,7 @@ async fn model_todo_create() -> Result<(), Box<dyn std::error::Error>> {
         ..PartialTodo::default()
     };
 
-    let user_context = user_context_from_token("123").await?;
+    let user_context = user_context_from_token(&database, "123").await?;
 
     // ACT
     let todo_created =
@@ -36,7 +36,7 @@ async fn model_todo_list() -> Result<(), Box<dyn std::error::Error>> {
     // ARRANGE
     let database = initialize_database().await?;
 
-    let user_context = user_context_from_token("123").await?;
+    let user_context = user_context_from_token(&database, "123").await?;
 
     //ACT
     let result = ModelAccessController::list(&database, &user_context).await?;
@@ -62,7 +62,7 @@ async fn model_todo_get_ok() -> Result<(), Box<dyn std::error::Error>> {
     // ARRANGE
     let database = initialize_database().await?;
 
-    let user_context = user_context_from_token("123").await?;
+    let user_context = user_context_from_token(&database, "123").await?;
 
     // ACT
     let todo = ModelAccessController::get(&database, &user_context, 100).await?;
@@ -79,7 +79,7 @@ async fn model_todo_get_wrong_id() -> Result<(), Box<dyn std::error::Error>> {
     // ARRANGE
     let database = initialize_database().await?;
 
-    let user_context = user_context_from_token("123").await?;
+    let user_context = user_context_from_token(&database, "123").await?;
 
     // ACT
     let result = ModelAccessController::get(&database, &user_context, 999).await;
@@ -106,7 +106,7 @@ async fn model_todo_update_ok() -> Result<(), Box<dyn std::error::Error>> {
         ..PartialTodo::default()
     };
 
-    let user_context = user_context_from_token("123").await?;
+    let user_context = user_context_from_token(&database, "123").await?;
 
     let todo_created =
         ModelAccessController::create(&database, &user_context, data_fixture.clone()).await?;
@@ -144,7 +144,7 @@ async fn model_todo_delete_simple() -> Result<(), Box<dyn std::error::Error>> {
     // ARRANGE
     let database = initialize_database().await?;
 
-    let utx: UserContext = user_context_from_token("123").await?;
+    let utx: UserContext = user_context_from_token(&database, "123").await?;
 
     // ACT
 

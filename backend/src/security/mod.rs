@@ -1,10 +1,15 @@
 use thiserror::Error as ThisError;
 
+use crate::model::PostgresDatabase;
+
 pub struct UserContext {
     pub user_id: i64,
 }
 
-pub async fn user_context_from_token(user_token: &str) -> Result<UserContext, Error> {
+pub async fn user_context_from_token(
+    _database: &PostgresDatabase,
+    user_token: &str,
+) -> Result<UserContext, Error> {
     // TODO : real validation needed
     // fetch user informations from database
     match user_token.parse::<i64>() {
