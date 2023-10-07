@@ -20,3 +20,5 @@ warp = "0.3"
 # Database dependencies
 sqlx = { version = "0.7.1", features = ["runtime-tokio-rustls", "postgres"] }
 
+[dev-dependencies]
+anyhow = "1"
