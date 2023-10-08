@@ -1,4 +1,4 @@
-use crate::web::HEADER_XAUTH;
+use crate::web::{handle_rejection, HEADER_XAUTH};
 use std::sync::Arc;
 use warp::hyper;
 use warp::hyper::body;
@@ -21,7 +21,7 @@ async fn web_todo_list() -> AnyhowResult<()> {
     let database = initialize_database().await?;
     let database = Arc::new(database);
 
-    let todo_apis = rest_filters("api", Arc::clone(&database));
+    let todo_apis = rest_filters("api", Arc::clone(&database)).recover(handle_rejection);
 
     // ACT
 
