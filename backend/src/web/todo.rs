@@ -72,6 +72,18 @@ async fn todo_update(
     Ok(response)
 }
 
+async fn todo_delete(
+    database: Arc<PostgresDatabase>,
+    user_ctx: UserContext,
+    todo_id: i64,
+) -> Result<WarpJSON, WarpRejection> {
+    let todo = ModelAccessController::delete(&database, &user_ctx, todo_id).await?;
+
+    let response = serialize_to_warpjson(todo);
+
+    Ok(response)
+}
+
 fn serialize_to_warpjson<S: Serialize>(data: S) -> WarpJSON {
     let response = serde_json::json!({"data": data});
     warp::reply::json(&response)
