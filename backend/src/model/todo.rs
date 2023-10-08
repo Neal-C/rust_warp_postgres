@@ -26,7 +26,7 @@ pub enum Status {
 }
 
 #[allow(clippy::module_name_repetitions)]
-#[derive(Default, Clone)]
+#[derive(Default, Clone, Deserialize)]
 pub struct PartialTodo {
     pub cid: Option<i64>,
     pub title: Option<String>,
